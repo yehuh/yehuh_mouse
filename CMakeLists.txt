@@ -203,3 +203,5 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+add_executable(buzzer src/buzzer1.cpp)
+target_link_libraries(buzzer ${catkin_LIBRARIES})
