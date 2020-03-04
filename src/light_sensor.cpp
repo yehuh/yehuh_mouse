@@ -14,36 +14,36 @@ int main (int argc, char **argv)
  ros::NodeHandle n;
  ros::Publisher value_trans =
     n.advertise<yehuh_mouse::LightSensorValues>("SensorValues",1000);
- ros::Rate loop_rate(1);
- std::vector<std::string> str_vec;
+ double freq =1;
+ 
+ //n.param<double>("light_sensor_freq", freq, 1.0);
+ //n.setParam("light_sensor_freq", 1.0);
+ 
+ n.getParam("light_sensor_freq",freq);
+ if(freq<0){freq = 1;}
+ ros::Rate loop_rate(freq);
 
+ std::vector<std::string> str_vec;
  while(ros::ok())
  {
+  std::cout<<"freq="<<freq<<std::endl;
   std::fstream light_file;
   std::string str;  
   light_file.open("/dev/rtlightsensor0");
   
    getline(light_file, str);
-   //std::cout<<str<<std::endl;
-   //std::cout<<"str size"<<str.size()<<std::endl;
-   
+      
    int space_pos = 0;
    for(int data_pos=0;data_pos<str.size();data_pos++)
    {
     if(str[data_pos]==' ')
     {
-     //std::cout<<"space_pos:"<<space_pos<<std::endl;
-     str_vec.push_back(str.substr(space_pos,data_pos - space_pos));
-     //std::cout<<"str size: "<<str_vec.size()<<std::endl;
-
-     //std::cout<<"value:"<<str.substr(space_pos,data_pos-space_pos)<<"fin"<<std::endl;
-     space_pos = data_pos+1;
+      str_vec.push_back(str.substr(space_pos, data_pos - space_pos));
+      space_pos = data_pos+1;
     }
    }
-   str_vec.push_back(str.substr(space_pos, str.size()));
-   //std::cout<<"str size: "<<str_vec.size()<<std::endl;
-   //std::cout<<"value: "<<str_vec.back()<<std::endl;
- 
+   str_vec.push_back(str.substr(space_pos, str.size())); //last sesor value
+    
   yehuh_mouse::LightSensorValues lsv;
   lsv.right_forward = std::atoi(str_vec[0].c_str());
   lsv.right_side = std::atoi(str_vec[1].c_str());
