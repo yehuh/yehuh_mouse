@@ -10,6 +10,7 @@ project(yehuh_mouse)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  geometry_msgs
   message_generation
 )
 
@@ -50,6 +51,7 @@ find_package(catkin REQUIRED COMPONENTS
  add_message_files(
    FILES
    LightSensorValues.msg
+   MotorFreqs.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -209,4 +211,5 @@ target_link_libraries(buzzer ${catkin_LIBRARIES})
 add_executable(light_sensor src/light_sensor.cpp)
 target_link_libraries(light_sensor ${catkin_LIBRARIES})
 
-
+add_executable(motor_freq src/motor_freq.cpp)
+target_link_libraries(motor_freq ${catkin_LIBRARIES})
