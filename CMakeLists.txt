@@ -10,6 +10,7 @@ project(yehuh_mouse)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  std_srvs
   geometry_msgs
   message_generation
 )
@@ -106,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES yehuh_mouse
-  CATKIN_DEPENDS roscpp std_msgs message_runtime
+  CATKIN_DEPENDS roscpp std_msgs std_srvs message_runtime
 #  DEPENDS system_lib
 )
 

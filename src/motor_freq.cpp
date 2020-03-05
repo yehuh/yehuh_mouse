@@ -3,6 +3,7 @@
 #include "std_msgs/Int16.h"
 #include "yehuh_mouse/MotorFreqs.h"
 #include "geometry_msgs/Twist.h"
+#include <std_srvs/Trigger.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -18,7 +19,8 @@ class Motor
  ros::Subscriber sub_raw;
  ros::Subscriber sub_cmd_vel;
  ros::Time last_time;
- 
+ ros::ServiceServer srv_on;
+ ros::ServiceServer srv_off;
   bool set_power(const bool motor_en)
   {
    std::ofstream motor_en_file;
@@ -31,6 +33,7 @@ class Motor
    }
    motor_en_file << motor_en<<std::endl;
    motor_en_file.close();
+   is_on = motor_en;
    return true;
   }
   
@@ -62,6 +65,20 @@ class Motor
    using_cmd_vel =true;
    last_time = ros::Time::now();
   }
+  
+  std_srvs::TriggerResponse onoff_response(const bool onoff)
+  {
+   std_srvs::TriggerResponse d;
+   d.success = set_power(onoff);
+   d.message = "ON";//is_on?"ON":"OFF";
+   return d;
+  }
+
+  bool callback_on(std_srvs::TriggerRequest& req, std_srvs::TriggerResponse& resp)
+  {return onoff_response(true).success;}
+  
+  bool callback_off(std_srvs::TriggerRequest& req, std_srvs::TriggerResponse& resp)
+  {return onoff_response(false).success;}
 
   Motor(const ros::NodeHandle nh)
   :node_handle(nh)
@@ -74,6 +91,8 @@ class Motor
                &Motor::callback_cmd_vel,this);
    last_time = ros::Time::now();
    using_cmd_vel = false;
+   srv_on = node_handle.advertiseService("motor_on", &Motor::callback_on, this);
+   srv_off = node_handle.advertiseService("motor_off",&Motor::callback_off, this);
   } 
   
   ~Motor(){}
