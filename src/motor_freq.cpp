@@ -70,15 +70,21 @@ class Motor
   {
    std_srvs::TriggerResponse d;
    d.success = set_power(onoff);
-   d.message = "ON";//is_on?"ON":"OFF";
+   d.message = is_on?"ON":"OFF";
    return d;
   }
 
   bool callback_on(std_srvs::TriggerRequest& req, std_srvs::TriggerResponse& resp)
-  {return onoff_response(true).success;}
+  {
+   resp = onoff_response(true);
+   return resp.success;
+  }
   
   bool callback_off(std_srvs::TriggerRequest& req, std_srvs::TriggerResponse& resp)
-  {return onoff_response(false).success;}
+  {
+   resp = onoff_response(false);
+   return resp.success;
+  }
 
   Motor(const ros::NodeHandle nh)
   :node_handle(nh)
