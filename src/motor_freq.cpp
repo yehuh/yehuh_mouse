@@ -3,9 +3,8 @@
 int main(int argc, char **argv)
 {
  ros::init(argc, argv,"motors");
- ros::NodeHandle nh;
  ros::Rate rate(10);
- Motor m(nh);
+ Motor m;
  while(ros::ok())
  {
   if(m.using_cmd_vel && ros::Time::now().toSec() - m.last_time.toSec()>1.0)

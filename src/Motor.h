@@ -103,8 +103,7 @@ class Motor
    return true;
   } 
   
-  Motor(const ros::NodeHandle nh)
-  :node_handle(nh)
+  Motor()
   {
    if(set_power(true)){is_on = true;}
    else{is_on = false;}
