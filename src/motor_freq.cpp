@@ -1,17 +1,4 @@
-#include "ros/ros.h"
-#include "std_msgs/Float64.h"
-#include "std_msgs/Int16.h"
-#include "std_srvs/Trigger.h"
-#include "yehuh_mouse/MotorFreqs.h"
-#include "yehuh_mouse/TimedMotion.h"
 #include "Motor.h"
-#include "geometry_msgs/Twist.h"
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <cmath>
-
-#define QUEUE_SIZE 100
 
 int main(int argc, char **argv)
 {
