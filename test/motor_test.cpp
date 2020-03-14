@@ -8,7 +8,6 @@ TEST(MotorFixture, TestRawFreq)
  {
   Motor m;
   m.set_raw_freq(50,-50);
-  //while(ros::Time::now().toSec() - m.last_time.toSec() < 10.0){}
   ros::Duration(10.0).sleep();
   m.set_raw_freq(0,0);
  }
@@ -26,7 +25,8 @@ TEST(MotorFixture, TestCmdVel)
   twi_msg.linear.x = 0.1414;
   twi_msg.angular.z = 1.57;
   pub.publish(twi_msg);
-  while(ros::Time::now().toSec() - m.last_time.toSec()<10.0){}
+  //while(ros::Time::now().toSec() - m.last_time.toSec()<10.0){}
+  ros::Duration(10.0).sleep();
   twi_msg.linear.x = 0;
   twi_msg.angular.z =0;
   pub.publish(twi_msg);
