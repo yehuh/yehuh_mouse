@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -57,7 +58,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## Generate services in the 'srv' folder
 add_service_files(
-   FILES#
+   FILES
    TimedMotion.srv
  )
 
@@ -67,6 +68,7 @@ add_service_files(
 #   Action1.action
 #   Action2.action
 # )
+
 
 ## Generate added messages and services with any dependencies listed here
  generate_messages(
@@ -118,7 +120,8 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-  ${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS} 
+  ${catkin_INCLUDE_DIRS}/src
 )
 
 ## Declare a C++ library
@@ -198,10 +201,12 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_yehuh_mouse.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+if(CATKIN_ENABLE_TESTING)
+ find_package(rostest REQUIRED)
+ add_rostest_gtest(motor_test test/motor.test test/motor_test.cpp) 
+ target_link_libraries(motor_test ${catkin_LIBRARIES})
+endif()
+
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

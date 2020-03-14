@@ -112,7 +112,7 @@ class Motor
    sub_cmd_vel = node_handle.subscribe("cmd_vel", QUEUE_SIZE,
                &Motor::callback_cmd_vel,this);   
 
-   last_time = ros::Time::now();
+   // last_time = ros::Time::now();
    using_cmd_vel = false;
    srv_on = node_handle.advertiseService("motor_on", &Motor::callback_on, this);
    srv_off = node_handle.advertiseService("motor_off", &Motor::callback_off, this);
