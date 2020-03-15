@@ -1,4 +1,4 @@
-#include "Motor.h"
+#include "../include/yehuh_mouse/Motor.h"
 #include <gtest/gtest.h>
 
 
@@ -7,8 +7,8 @@ TEST(MotorFixture, TestRawFreq)
  try
  {
   Motor m;
-  m.set_raw_freq(50,-50);
-  ros::Duration(10.0).sleep();
+  m.set_raw_freq(250,-250);
+  ros::Duration(5.0).sleep();
   m.set_raw_freq(0,0);
  }
  catch(...)
@@ -20,16 +20,33 @@ TEST(MotorFixture, TestCmdVel)
  try
  {
   Motor m;
+  ros::Rate rate(0.3);
   ros::Publisher pub = m.node_handle.advertise<geometry_msgs::Twist>("cmd_vel", QUEUE_SIZE);
-  geometry_msgs::Twist twi_msg;
-  twi_msg.linear.x = 0.1414;
-  twi_msg.angular.z = 1.57;
-  pub.publish(twi_msg);
-  //while(ros::Time::now().toSec() - m.last_time.toSec()<10.0){}
-  ros::Duration(10.0).sleep();
-  twi_msg.linear.x = 0;
-  twi_msg.angular.z =0;
-  pub.publish(twi_msg);
+  ros::Publisher pub_stop = m.node_handle.advertise<geometry_msgs::Twist>("cmd_vel", QUEUE_SIZE);
+  int spin_count = 0;
+  while(ros::ok())
+  {
+   geometry_msgs::Twist twi_msg;
+   spin_count++;
+   if(spin_count > 2)
+   {
+    twi_msg.linear.x =   0.0;
+    twi_msg.angular.z =  0.0;
+    pub_stop.publish(twi_msg);
+    ros::spinOnce();
+    rate.sleep();
+    if(spin_count> 4) break;
+   }
+   else
+   {
+    twi_msg.linear.x =   0.0;
+    twi_msg.angular.z = 1.57;
+    pub.publish(twi_msg);
+   
+    ros::spinOnce();
+    rate.sleep();
+   }
+  }
  }
  catch(...)
  {FAIL()<<"CmdVel Apply Ero";}

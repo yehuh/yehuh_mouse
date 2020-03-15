@@ -1,4 +1,4 @@
-#include "Motor.h"
+#include "../include/yehuh_mouse/Motor.h"
 
 int main(int argc, char **argv)
 {
