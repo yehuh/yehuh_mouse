@@ -99,7 +99,7 @@ class Motor
    
    std::ofstream motor_file;
    motor_file.open("/dev/rtmotor0");
-   motor_file << req.left_hz<< req.right_hz<< req.duration_ms<<std::endl;
+   motor_file <<req.left_hz<<" "<<req.right_hz<<" "<<req.duration_ms;
    return true;
   } 
   
