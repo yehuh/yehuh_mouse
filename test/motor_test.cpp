@@ -37,7 +37,47 @@ TEST(MotorFixture, TestCmdVel)
  {FAIL()<<"CmdVel Apply Ero";}
 }
 
-TEST(MotorFixture, TestRawFreq)
+TEST(MotorFixture, TestTimedMotion)
+{
+ try
+ {
+  Motor m;
+ // ros::Rate rate(0.3);
+  ros::ServiceClient clt = m.node_handle.serviceClient<yehuh_mouse::TimedMotion>("timed_motion");
+  int spin_count = 0;
+ // while(ros::ok())
+ // {
+   yehuh_mouse::TimedMotion tm_srv;
+   spin_count++;
+   if(spin_count < 2)
+   {
+    tm_srv.request.left_hz =  300;
+    tm_srv.request.right_hz = -300;
+    tm_srv.request.duration_ms = 500;
+    clt.call(tm_srv);
+   // {ROS_INFO("Sucess");}
+   // else
+   // {ROS_ERROR("Time Motion Service Error %c\n",' ');}
+   // ros::spinOnce();
+   // rate.sleep();
+   }
+   /*else
+   {
+    twi_msg.linear.x =   0.0000;
+    twi_msg.angular.z =  0.0000;
+    pub.publish(twi_msg);
+   
+    ros::spinOnce();
+    rate.sleep();
+    if(spin_count> 2) break;
+   }*/
+ // }
+ }
+ catch(...)
+ {FAIL()<<"CmdVel Apply Ero";}
+}
+
+/*TEST(MotorFixture, TestRawFreq)
 {
  try
  {
@@ -48,7 +88,7 @@ TEST(MotorFixture, TestRawFreq)
  }
  catch(...)
  {FAIL() << "Raw Freg Apply Ero";}
-}
+}*/
 
 int main(int argc, char **argv)
 {
