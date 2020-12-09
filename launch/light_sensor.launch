@@ -1,0 +1,4 @@
+<launch>
+ <param name="light_sensor_freq" type="double" value="1" />
+ <node name="light_sensor" pkg="yehuh_mouse" type="light_sensor" />
+</launch>
