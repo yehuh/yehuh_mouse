@@ -1,4 +1,4 @@
 <launch>
- <!-- <node pkg="yehuh_mouse" name="motors" type="motors" /> -->
- <test test-name="motor_test" pkg="yehuh_mouse" type="motor_test" time-limit="60.0" />
+ <node pkg="yehuh_mouse" name="motor_freq" type="motor_freq" />
+ <test test-name="motor_test" pkg="yehuh_mouse" type="motor_test" time-limit="10.0" />
 </launch>

@@ -2,17 +2,18 @@
 
 int main(int argc, char **argv)
 {
- ros::init(argc, argv,"motors");
+ ros::init(argc, argv,"motor_freq");
  //ros::NodeHandle nh;
  Motor m;
- ros::Rate rate(10);
-
+ ros::Rate rate(1);
+ 
  while(ros::ok())
  {
-  if(m.using_cmd_vel && ros::Time::now().toSec() - m.last_time.toSec()>1.0)
+  if(m.using_cmd_vel && ros::Time::now().toSec() - m.last_time.toSec()>15.0)
   {
-   m.set_raw_freq(0,0);
+   m.set_raw_freq(0, 0);
    m.using_cmd_vel = false;
+   ros::shutdown();
   }
   ros::spinOnce();
   rate.sleep();

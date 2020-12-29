@@ -203,11 +203,9 @@ include_directories(
 ## Add gtest based cpp test target and link libraries
 if(CATKIN_ENABLE_TESTING)
  find_package(rostest REQUIRED)
- add_rostest_gtest(motor_test test/motor.test test/motor_test.cpp) 
+ add_rostest_gtest(motor_test test/motor.test test/motor_test.cpp)
  target_link_libraries(motor_test ${catkin_LIBRARIES})
 endif()
-
-
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 add_executable(buzzer src/buzzer1.cpp)
