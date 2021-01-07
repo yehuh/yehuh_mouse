@@ -10,7 +10,6 @@ TEST(MotorFixture, TestCmdVel)
 
   	//ros::Publisher pub = m.node_handle.advertise<geometry_msgs::Twist>("cmd_vel", QUEUE_SIZE);
   	//int spin_count = 0;
-  	//ros::Rate rate(1.0);
  	while(ros::ok()){
    	geometry_msgs::Twist twi_msg;
    //	if(spin_count < 2){
@@ -21,7 +20,6 @@ TEST(MotorFixture, TestCmdVel)
    //	}else{
 	
    	//ros::spinOnce();
-	SUCCEED();
 	}
 
 	twi_msg.linear.x =   0.0000;
@@ -34,19 +32,44 @@ TEST(MotorFixture, TestCmdVel)
  }
  catch(...)
  {FAIL()<<"CmdVel Apply Ero";}*/
-	
+	Motor m;
 	ros::NodeHandle nh;
+  	ros::Rate rate(0.5);
 	ros::Publisher pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", QUEUE_SIZE);
+	ros::Publisher raw_motor_pub = 
+		nh.advertise<yehuh_mouse::MotorFreqs>("motor_raw", QUEUE_SIZE);
    	geometry_msgs::Twist twi_msg;
-  	twi_msg.linear.x =   0.0000000;
-  	twi_msg.angular.z =  3.14;
-  	pub.publish(twi_msg);
-	ros::Duration(4).sleep();
+	yehuh_mouse::MotorFreqs msg_mf;
+	msg_mf.left = 0;
+	msg_mf.right = 0;
+	int rev_cnt =0;
+	while(ros::ok()){
+		//if(ros::Time::now().toSec() - m.last_time.toSec()>3.0){
+		if(rev_cnt>3){
+			rev_cnt++;
+			ROS_INFO("motor is shutting down");
+		  	twi_msg.linear.x =   0.0000;
+			twi_msg.angular.z =  0.0000;
+			//raw_motor_pub.publish(msg_mf);
+			pub.publish(twi_msg);
 
-	twi_msg.linear.x =   0.0000;
-	twi_msg.angular.z =  0.0000;
-  	pub.publish(twi_msg);
-	ros::Duration(4).sleep();
+			if(rev_cnt<8){
+				ros::spinOnce();
+				rate.sleep();
+			}else{
+				//SUCCEED();
+				ros::shutdown();
+			}
+		}else{
+		  	twi_msg.angular.z = -3.14;
+			twi_msg.linear.x =   0.0000;
+			rev_cnt++;
+		  	pub.publish(twi_msg);
+			ros::spinOnce();
+			rate.sleep();
+		}
+
+	}
 	EXPECT_EQ(2, 1+1);
 }
 
