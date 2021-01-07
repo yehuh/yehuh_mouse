@@ -7,16 +7,16 @@ TEST(MotorFixture, TestCmdVel)
 	
 /* try{
 	//Motor m;
-	ros::NodeHandle nh;
-  	//ros::Rate rate(1.0);
+
   	//ros::Publisher pub = m.node_handle.advertise<geometry_msgs::Twist>("cmd_vel", QUEUE_SIZE);
-	ros::Publisher pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", QUEUE_SIZE);
   	//int spin_count = 0;
+  	//ros::Rate rate(1.0);
  	while(ros::ok()){
    	geometry_msgs::Twist twi_msg;
    //	if(spin_count < 2){
   	twi_msg.linear.x =   0.0000000;
   	twi_msg.angular.z =  3.14;
+
   	pub.publish(twi_msg);
    //	}else{
 	
@@ -34,6 +34,19 @@ TEST(MotorFixture, TestCmdVel)
  }
  catch(...)
  {FAIL()<<"CmdVel Apply Ero";}*/
+	
+	ros::NodeHandle nh;
+	ros::Publisher pub = nh.advertise<geometry_msgs::Twist>("cmd_vel", QUEUE_SIZE);
+   	geometry_msgs::Twist twi_msg;
+  	twi_msg.linear.x =   0.0000000;
+  	twi_msg.angular.z =  3.14;
+  	pub.publish(twi_msg);
+	ros::Duration(4).sleep();
+
+	twi_msg.linear.x =   0.0000;
+	twi_msg.angular.z =  0.0000;
+  	pub.publish(twi_msg);
+	ros::Duration(4).sleep();
 	EXPECT_EQ(2, 1+1);
 }
 
@@ -97,6 +110,6 @@ int main(int argc, char **argv)
 {
  testing::InitGoogleTest(&argc, argv);
  ros::init(argc, argv, "motor_test");
- ros::NodeHandle nh;
+ // ros::NodeHandle nh;
  return RUN_ALL_TESTS();
 }

@@ -1,4 +1,3 @@
 <launch>
  <node name="motors" pkg="yehuh_mouse" type="motor_freq" />
- <test test-name="motorTest" pkg="yehuh_mouse" type="motor_test" time-limit="30.0" />
 </launch>
